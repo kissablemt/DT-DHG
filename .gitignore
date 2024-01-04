@@ -1,0 +1,76 @@
+**/nohup.out
+**/images/
+exp/**/results*/
+exp/**/logs/
+bak/
+logs/
+images/
+results*/
+:)
+**/:)
+*.pdf
+*.csv
+
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+*.aux
+
+# Packages #
+############
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Logs and databases #
+######################
+*.log
+*.sql
+*.sqlite
+
+# OS generated files #
+######################
+.DS_Store
+ehthumbs.db
+Icon?
+Thumbs.db
+
+# Editors #
+###########
+.vscode/
+.idea/
+
+# Dependency #
+#############
+/node_modules
+/bower_components
+
+# Builds #
+##########
+/build
+/dist
+/out
+/public
+
+# Jupyter Notebook #
+####################
+.ipynb_checkpoints/
+
+# Python bytecode #
+###################
+__pycache__/
+*.py[cod]
+*$py.class
+

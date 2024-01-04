@@ -1,0 +1,17 @@
+global_batch_norm: true
+
+layers:
+  - name: "HETSAGEConv"
+    args:
+        in_features: 32
+        out_features: 32
+        aggregator_type: "mean"
+        batch_norm: true
+    repeat: 5
+
+losses:
+  - type: "global"
+    name: "bce_logits"
+    args:
+        pos_weight: null
+    weight: 1

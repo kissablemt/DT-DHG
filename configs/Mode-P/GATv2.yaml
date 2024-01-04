@@ -1,0 +1,94 @@
+global_batch_norm: true
+
+layers:
+  # 0
+  - name: "HETAv2"
+    args:
+        in_features: 32
+        out_features: 32
+        gat_feat_drop: 0
+        gat_attn_drop: 0
+        batch_norm: true
+    rankbern:
+        p_list: [  99]
+        v_list: [1.00]
+        enable_in_test: true   
+    skipnode:
+        skip_rate: 0.5
+        skip_type: "uniform"
+        enable_in_test: false
+
+  # 1 
+  - name: "HETAv2"
+    args:
+        in_features: 32
+        out_features: 32
+        gat_feat_drop: 0
+        gat_attn_drop: 0
+        batch_norm: true
+    rankbern:
+        p_list: [  98]
+        v_list: [1.00]
+        enable_in_test: true   
+    skipnode:
+        skip_rate: 0.5
+        skip_type: "uniform"
+        enable_in_test: false
+  
+  # 2
+  - name: "HETAv2"
+    args:
+        in_features: 32
+        out_features: 32
+        gat_feat_drop: 0
+        gat_attn_drop: 0
+        batch_norm: true
+    rankbern:
+        p_list: [  95,   90]
+        v_list: [1.00, 0.60]
+        enable_in_test: true   
+    skipnode:
+        skip_rate: 0.5
+        skip_type: "uniform"
+        enable_in_test: false
+
+  # 3
+  - name: "HETAv2"
+    args:
+        in_features: 32
+        out_features: 32
+        gat_feat_drop: 0
+        gat_attn_drop: 0
+        batch_norm: true
+    rankbern:
+        p_list: [  95,   90,   85]
+        v_list: [1.00, 0.60, 0.30]
+        enable_in_test: true   
+    skipnode:
+        skip_rate: 0.5
+        skip_type: "uniform"
+        enable_in_test: false
+
+  # 4
+  - name: "HETAv2"
+    args:
+        in_features: 32
+        out_features: 32
+        gat_feat_drop: 0
+        gat_attn_drop: 0
+        batch_norm: true
+    rankbern:
+        p_list: [  95,   90,   85,   80]
+        v_list: [1.00, 0.60, 0.30, 0.15]
+        enable_in_test: true   
+    skipnode:
+        skip_rate: 0.5
+        skip_type: "uniform"
+        enable_in_test: false
+
+losses:
+  - type: "global"
+    name: "bce_logits"
+    args:
+        pos_weight: null
+    weight: 1

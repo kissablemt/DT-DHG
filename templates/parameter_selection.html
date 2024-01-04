@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parameter Selection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: auto;
+            font-size: 14px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            display: inline-block;
+            margin-bottom: 0.25rem;
+        }
+
+        .group {
+            margin-bottom: 0.5rem;
+            border: 1px solid #ccc;
+            padding: 0.5rem;
+            border-radius: 5px;
+        }
+
+        .group>div {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            border: 1px solid black;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <h1>Dashboard</h1>
+    <h2>GPU Information</h2>
+    <table id="gpu-table">
+        <thead>
+            <tr>
+                <th>Index</th>
+                <th>Name</th>
+                <th>Temperature</th>
+                <th>GPU Utilization</th>
+                <th>Memory Utilization</th>
+                <th>Memory Total</th>
+                <th>Memory Free</th>
+                <th>Memory Used</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <h2>Python Process Information</h2>
+    <table id="process-table">
+        <thead>
+            <tr>
+                <th>PID</th>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Used GPU Memory</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <h2>Generated Command</h2>
+    <code id="generated_command"></code>
+    <h2>Parameter Selection</h2>
+    <form id="parameter_form" onsubmit="submitForm(); return false;">
+        <div class="column">
+            <div class="group">
+                <label for="name">Task:</label>
+                <input type="text" id="name" name="name">
+            </div>
+            <div class="group">
+                <div>
+                    <label for="tmp">Tmp:</label>
+                    <input type="checkbox" id="tmp" name="tmp">
+                </div>
+            </div>
+            <div class="group">
+                <label for="config">Config:</label>
+                <input type="text" id="search_config" placeholder="Search configs...">
+                <select id="config" name="config">
+                    {% for config_file in config_files %}
+                    <option value="{{ config_file }}">{{ config_file }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="group">
+                <label for="dataset">Dataset:</label>
+                <select id="dataset" name="dataset">
+                    <option value="Yamanishi">Yamanishi</option>
+                    <option value="DTI-HETA">DTI-HETA</option>
+                </select>
+            </div>
+            <div class="group">
+                <div>
+                    <label for="n_features">n_features:</label>
+                    <input type="number" id="n_features" name="n_features" value="32">
+                    <br><br>
+                </div>
+                <div>
+                    <label for="sim2feat">sim2feat:</label>
+                    <input type="checkbox" id="sim2feat" name="sim2feat">
+                </div>
+            </div>
+
+            <div class="group">
+                <div>
+                    <label for="epochs">Epochs:</label>
+                    <input type="number" id="epochs" name="epochs" value="5000" step="1000">
+                    <br><br>
+                </div>
+                <div>
+                    <label for="lr">Learning Rate:</label>
+                    <input type="number" id="lr" name="lr" value="0.001" step="0.001">
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="group">
+                <div>
+                    <label for="train_ratio">Train Ratio:</label>
+                    <input type="number" id="train_ratio" name="train_ratio" value="0.9" step="0.1">
+                    <br><br>
+                </div>
+                <div>
+                    <label for="kfold">K-fold:</label>
+                    <input type="number" id="kfold" name="kfold" value="0" step="1">
+                </div>
+            </div>
+            <div class="group">
+                <div>
+                    <label for="device">Device:</label>
+                    <select id="device" name="device">
+                        <option value="cuda">cuda</option>
+                        <option value="cpu">cpu</option>
+                    </select><br><br>
+                </div>
+                <div>
+                    <label for="seed">Seed:</label>
+                    <input type="number" id="seed" name="seed" value="0" step="1">
+
+                </div>
+            </div>
+            <div class="group">
+                <div>
+                    <label for="save_best">Save Best:</label>
+                    <input type="checkbox" id="save_best" name="save_best">
+                    <br><br>
+                </div>
+                <div>
+                    <label for="save_best_by">Save Best By:</label>
+                    <select id="save_best_by" name="save_best_by">
+                        <option value="auc">AUC</option>
+                        <option value="aupr">AUPR</option>
+                        <option value="hit_at_10">Hit at 10</option>
+                    </select>
+                </div>
+            </div>
+            <div class="group">
+                <div>
+                    <label for="calc_auc">Calc AUC:</label>
+                    <input type="checkbox" id="calc_auc" name="calc_auc">
+                    <br><br>
+                </div>
+                <div>
+                    <label for="calc_aupr">Calc AUPR:</label>
+                    <input type="checkbox" id="calc_aupr" name="calc_aupr">
+                    <br><br>
+                </div>
+                <div>
+                    <label for="calc_hit_at_10">Calc Hit@10:</label>
+                    <input type="checkbox" id="calc_hit_at_10" name="calc_hit_at_10">
+                    <br><br>
+                </div>
+            </div>
+
+        </div>
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        $(document).ready(function () {
+            // Store all the config options in an array
+            var configOptions = $("#config option").map(function () {
+                return { value: $(this).val(), text: $(this).text() };
+            }).get();
+        
+            $("#search_config").on("input", function () {
+                var searchTerm = $(this).val().toLowerCase();
+        
+                // Clear the current options
+                $("#config").empty();
+        
+                // Add options that match the search term
+                for (var i = 0; i < configOptions.length; i++) {
+                    var option = configOptions[i];
+                    if (option.text.toLowerCase().indexOf(searchTerm) !== -1) {
+                        $("#config").append(new Option(option.text, option.value));
+                    }
+                }
+            });
+        });
+        
+    </script>
+
+    <script>
+        function submitForm() {
+            $.ajax({
+                type: 'POST',
+                url: '/generate_command',
+                data: $('#parameter_form').serialize(),
+                success: function (data) {
+                    $('#generated_command').text(data.command);
+                },
+                error: function () {
+                    alert("An error occurred. Please try again.");
+                }
+            });
+        }
+    </script>
+    <script>
+        function updateNvidiaSmiOutput() {
+            $.getJSON('/nvidia-smi', function (data) {
+                let gpuData = data.gpu_data;
+                let process_data = data.process_data;
+
+                let gpuTableBody = '';
+                for (let item of gpuData) {
+                    gpuTableBody += `<tr>
+                        <td>${item.index}</td>
+                        <td>${item.name}</td>
+                        <td>${item.temperature}</td>
+                        <td>${item.gpu_utilization}</td>
+                        <td>${item.memory_utilization}</td>
+                        <td>${item.memory_total}</td>
+                        <td>${item.memory_free}</td>
+                        <td>${item.memory_used}</td>
+                    </tr>`;
+                }
+                $('#gpu-table tbody').html(gpuTableBody);
+
+                let processTableBody = '';
+                for (let item of process_data) {
+                    processTableBody += `<tr>
+                        <td>${item.pid}</td>
+                        <td>${item.name}</td>
+                        <td>${item.date}</td>
+                        <td>${item.used_gpu_memory}</td>
+                        <td><button onclick="killProcess(${item.pid})">Kill Process</button></td>
+                    </tr>`;
+                }
+                $('#process-table tbody').html(processTableBody);
+            });
+        }
+        setInterval(updateNvidiaSmiOutput, 1000);  // 每秒更新一次
+
+        function killProcess(pid) {
+            $.post('/kill-process', {'pid': pid}, function (response) {
+                alert(response.message);
+                if (response.status === 'success') {
+                    updateNvidiaSmiOutput();
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

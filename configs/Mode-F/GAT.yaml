@@ -1,0 +1,25 @@
+global_batch_norm: true
+layers:
+  - name: "HETA"
+    args:
+        in_features: 32
+        out_features: 32
+        gat_feat_drop: 0
+        gat_attn_drop: 0
+        batch_norm: true
+    rankbern:
+        p_list: [  95,   90,   85,   80,   75]
+        v_list: [1.00, 0.60, 0.30, 0.15, 0.10]
+        enable_in_test: false   
+    skipnode:
+        skip_rate: 0.5
+        skip_type: "uniform"
+        enable_in_test: false
+    repeat: 5
+
+losses:
+  - type: "global"
+    name: "bce_logits"
+    args:
+        pos_weight: null
+    weight: 1
